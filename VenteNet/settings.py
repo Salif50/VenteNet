@@ -67,9 +67,14 @@ WSGI_APPLICATION = 'VenteNet.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ventenet',
+        'USER':'root',
+        'PASSWORD':'',
+         'OPTIONS':{
+            'init_command':"SET sql_mode='STRICT_TRANS_TABLES'",
+        }
+        }
 }
 
 
@@ -103,13 +108,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
 STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+MEDIA_URL='media/'
+MEDIA_ROOT='media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
