@@ -117,6 +117,14 @@ urlpatterns = [
 `Produit.objects.filter(designation__contains=nom)`
 `etc ...`
 
+# gestion de pannier
+
+## afficher le contenu du pannier utilisateur
+`Nous devons recuperer tous les produits se trouvants dans request.session['pannier]`
+`pour cela on doit verifier si la variable session à une clé pannier on tape`
+`if 'pannier' in request.session:`
+` puis on parcour pour recuperer tous les produits`
+
 
 
 

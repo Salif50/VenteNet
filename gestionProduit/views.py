@@ -5,6 +5,8 @@ from gestionProduit.models import Produit,Categorie
 
 def index(request):
 
+     #del request.session['pannier']
+
      categories=Categorie.objects.all()
      produits=Produit.objects.all()
      context={
@@ -47,31 +49,72 @@ def detail(request,id):
      return render(request,'gestionProduit/detail.html',context)
 
 
-def ajouter_pannier(request,id):
-     if 'pannier' not in request.session:
-         request.session['pannier']={}
+def ajouter_pannier(request, id):
+    if 'pannier' not in request.session:
+        request.session['pannier'] = {}
 
-     pannier=request.session.get('pannier')
+    pannier = request.session.get('pannier')
 
-     produit=get_object_or_404(Produit,pk=id)
-     if id not in pannier:
-          pannier[id]={
-               'designation':produit.designation,
-               'prix':produit.prix,
-               'image':produit.image.url,
-               'id':produit.id
+    produit = get_object_or_404(Produit, pk=id)
+    if id not in pannier:
+        pannier[id] = {
+            'designation': produit.designation,
+            'prix': produit.prix,
+            'image': produit.image.url,
+            'id': produit.id,
+            'quantite':1
+        }
+    else:
+        pannier[id]['quantite'] += 1  # Incrémentez la quantité si le produit existe déjà
 
-          }
-     
-     return redirect('index')
+    request.session.modified = True  # Marquer la session comme modifiée
+    
 
+    return redirect('show')
 
 
 
     
+#la view qui permet d'afficher le contenu du pannier
+def show_pannier(request):
+    #la variable pour stocker les produit se trouvant dans la session
+    produits = []
+    # la variable pour stocker le nombre de produit dans la session
+    nombre_produit=0
+    #tester si l'utilisateur possede de pannier
+    if 'pannier' in request.session:
+        pannier=request.session.get('pannier',{})
 
+        # bloucle pour parcourir puis recuperer tous les produits dans la session
+        for key in pannier:
+            # recuperer les informations d'un produit 
+            data_produit={
+                'designation':pannier[key]['designation'],
+                'prix':pannier[key]['prix'],
+                'image':pannier[key]['image']
+            }
+
+            # ajout du produit dans la liste des produits
+            produits.append(data_produit)
+
+   
+          
+           
      
-     
+    # recuperation du nombre de produit
+    nombre_produit=len(pannier) 
+    context = {
+        'produits': produits,
+        'nombre_produit':nombre_produit
+        
+    }
+
+    
+
+ 
+
+    return render(request, 'gestionProduit/pannier.html', context)
+
      
     
      
