@@ -6,12 +6,18 @@ from gestionProduit.models import Produit,Categorie
 def index(request):
 
      #del request.session['pannier']
+     pannier=0
+
+     if 'pannier' in request.session:
+         pannier=len(request.session['pannier'])
+     
 
      categories=Categorie.objects.all()
      produits=Produit.objects.all()
      context={
           'categories':categories,
-          'produits':produits
+          'produits':produits,
+          'nombre_produit':pannier
      }
 
 
@@ -79,8 +85,10 @@ def ajouter_pannier(request, id):
 def show_pannier(request):
     #la variable pour stocker les produit se trouvant dans la session
     produits = []
+    montant=0
     # la variable pour stocker le nombre de produit dans la session
     nombre_produit=0
+    pannier={}
     #tester si l'utilisateur possede de pannier
     if 'pannier' in request.session:
         pannier=request.session.get('pannier',{})
@@ -93,6 +101,7 @@ def show_pannier(request):
                 'prix':pannier[key]['prix'],
                 'image':pannier[key]['image']
             }
+            montant+=pannier[key]['prix']
 
             # ajout du produit dans la liste des produits
             produits.append(data_produit)
@@ -105,7 +114,8 @@ def show_pannier(request):
     nombre_produit=len(pannier) 
     context = {
         'produits': produits,
-        'nombre_produit':nombre_produit
+        'nombre_produit':nombre_produit,
+        'montant':montant
         
     }
 
@@ -118,3 +128,11 @@ def show_pannier(request):
      
     
      
+def clean(request):
+
+    if 'pannier' in request.session:
+        request.session['pannier']={}
+        request.session.modified=True
+    
+
+    return redirect('show')

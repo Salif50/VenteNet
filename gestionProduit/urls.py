@@ -10,6 +10,7 @@ urlpatterns = [
      path('detail/<id>/',views.detail,name='detail'),
      path('ajouter/<id>/',views.ajouter_pannier,name='ajouter_pannier'),
      path('show_pannier/',views.show_pannier,name="show"),
+     path('clean/',views.clean,name='clean'),
     
     
     

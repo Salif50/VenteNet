@@ -5,6 +5,7 @@
 
 <div class="container-fluid pt-5">
     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Les Produits</span></h2>
+    <a class="btn btn-danger btn-sm m-4" href="{% url 'clean' %}">Vider le pannier</a>
     <div class="row px-xl-5 pb-3">
         
         {% for produit in produits %}
@@ -33,6 +34,9 @@
         </div>
 
         {% endfor %}
+        <div>
+            <p>Le montant total à payer est: <span class="badge bg-success text-light fw-bold">{{ montant }}</span>GNF </p>
+        </div>
     </div>
 </div>
 

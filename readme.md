@@ -125,6 +125,14 @@ urlpatterns = [
 `if 'pannier' in request.session:`
 ` puis on parcour pour recuperer tous les produits`
 
+## Nombre d'article 
+
+`nombre_produit=len(request.session['pannier])`
+
+## vider le pannier
+
+`request.session['pannier']={}`
+
 
 
 
